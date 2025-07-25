@@ -1,0 +1,31 @@
+1. Original Time Series (Top Row):
+
+    Visual Inspection: The series shows a general upward drift (trend) and clear, repeating fluctuations that suggest strong seasonality. The variance also appears to increase with higher values, which is common for count data.
+
+    ACF (Autocorrelation Function): The ACF plot for the original series shows a slow decay of autocorrelation values, confirming the presence of a trend. More importantly, significant spikes are observed at regular intervals, most notably a strong positive spike at Lag 2 (representing 24 hours), confirming pronounced daily seasonality.
+
+    PACF (Partial Autocorrelation Function): Consistent with the ACF, the PACF also shows significant spikes at initial lags and a strong spike at Lag 2, further supporting the presence of a trend and daily seasonality.
+
+    Periodogram: The periodogram exhibits a very strong peak at frequency 0.5, which corresponds to a period of 2 lags. Since each lag is 12 hours, a period of 2 means a 24-hour cycle, unequivocally confirming dominant daily seasonality.
+
+2. First-Differenced Time Series (Bottom Row, Order=1):
+
+    Visual Inspection: After applying a first difference (value at t minus value at t−1), the series now fluctuates around a zero mean, indicating that the trend has largely been removed. However, the cyclical patterns and the amplitude of fluctuations remain quite prominent.
+
+    ACF: The initial autocorrelations drop off quickly after differencing, confirming effective trend removal. However, a significant negative spike persists at Lag 2, and other smaller significant spikes appear at seasonal multiples (e.g., around Lag 14). This clearly indicates that while the overall trend is gone, the daily seasonality has NOT been removed by simple first-order differencing alone.
+
+    PACF: The PACF also shows a significant negative spike at Lag 1 and a less pronounced spike at Lag 2, consistent with the transformation.
+
+    Periodogram: The strong peak at frequency 0.5 (daily seasonality) is still very much present, and appears relatively strong, reiterating that seasonal differencing is still required.
+
+Conclusion for Model Selection (SARIMA):
+
+Based on these observations, the total_number_of_patients time series is non-stationary and requires transformation for modeling.
+
+    Non-seasonal Differencing (d): A first-order difference (d=1) is appropriate to achieve mean stationarity and remove the overall trend.
+
+    Seasonal Period (S): The data exhibits a strong daily seasonality with a period of 2 lags (24 hours). Thus, S=2.
+
+    Seasonal Differencing (D): Since the daily seasonality persists after d=1, seasonal differencing (D=1) at the seasonal period of 2 will be necessary to achieve full stationarity.
+
+Therefore, a Seasonal ARIMA (SARIMA) model will be the most suitable choice for forecasting this time series. The general form would be SARIMA(p, 1, q)(P, 1, Q)[2]. The specific p, q, P, Q orders would be further refined by examining the ACF/PACF of the seasonally differenced series and through model selection techniques like auto_arima or tune_model
