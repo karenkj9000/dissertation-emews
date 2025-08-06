@@ -4,3 +4,7 @@ matplotlib
 seaborn
 scikit-learn
 pycaret
+catboost
+xgboost
+scikit-optimize
+kaleido
