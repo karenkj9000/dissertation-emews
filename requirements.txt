@@ -8,3 +8,5 @@ catboost
 xgboost
 scikit-optimize
 kaleido
+pycaret[analysis]
+lime
